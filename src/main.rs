@@ -29,8 +29,67 @@ The game ends:
 * the pile of province is empty
 * 3 piles of supply cards are empty
 
-
 */
+
+use std::collections::HashMap;
+
+type CardId = String;
+
+enum ActionType {
+    None,
+    Attack,
+    Reaction,
+}
+
+enum CardType {
+    Victory,
+    Treasure,
+    Kingdom(ActionType),
+    Curse,
+}
+
+struct Card {
+    card_id: CardId,
+    card_type: CardType,
+    name: String,
+    human_text: String,
+    store_cost: u8
+}
+
+struct CardInfos {
+    cards: HashMap<CardId, Card>
+}
+
+struct PlayerBoard {
+    remaining_actions: u8,
+    remaining_buys: u8,
+    name: String,
+    deck: Vec<CardId>,
+    hand: Vec<CardId>,
+    discarded_card: Vec<CardId>,
+    currently_played_card: Option<CardId>
+}
+
+struct BuyStore {
+    piles: HashMap<CardId, u8>
+}
+
+enum TurnPhase {
+    Action,
+    Buying,
+    Cleaning,
+}
+
+struct CurrentTurn {
+    player_name: String,
+    phase: TurnPhase,
+}
+
+struct GameBoard {
+    card_store: CardInfos,
+    players: Vec<PlayerBoard>,
+    buy_store: BuyStore
+}
 
 fn main() {
     println!("Hello, world!");
